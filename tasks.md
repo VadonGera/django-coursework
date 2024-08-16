@@ -14,3 +14,10 @@
 1. `django-admin startproject myproject .`
 2. `python manage.py runserver`
 
+## 3 - To-Do List
+
+1. `python manage.py startapp todolist`
+
+## 4 - Accounts
+
+1. `python manage.py startapp accounts`
