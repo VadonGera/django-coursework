@@ -1,1 +1,4 @@
 Django==5.1
+python-decouple==3.8
+psycopg==3.2.1
+psycopg-binary==3.2.1
