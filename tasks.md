@@ -42,11 +42,16 @@
    }
    ```
 
+## 5 - Accounts
 
-## 3 - To-Do List
+1. `python manage.py startapp accounts`
+2. class User(AbstractBaseUser)
+3. class MyUserManager(BaseUserManager)
+4. class UserCreationForm(forms.ModelForm)
+5. class CustomUserAdmin(UserAdmin)
+
+## 6 - To-Do List
 
 1. `python manage.py startapp todolist`
 
-## 4 - Accounts
 
-1. `python manage.py startapp accounts`
