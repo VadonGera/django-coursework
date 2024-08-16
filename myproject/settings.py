@@ -41,9 +41,18 @@ INSTALLED_APPS = [
 ]
 INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# JWT-аутентификация
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

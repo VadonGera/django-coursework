@@ -45,10 +45,51 @@
 ## 5 - Accounts
 
 1. `python manage.py startapp accounts`
+2. settings.py
+   ```python
+   # settings.py
+   
+   INSTALLED_APPS += [
+       'accounts.apps.AccountsConfig',
+   ]
+   
+   AUTH_USER_MODEL = 'accounts.User'
+   ```
 2. class User(AbstractBaseUser)
 3. class MyUserManager(BaseUserManager)
 4. class UserCreationForm(forms.ModelForm)
 5. class CustomUserAdmin(UserAdmin)
+7. `python manage.py createsuperuser`
+
+## 6 - REST API и Django REST Framework (DRF) + Системы аутентификации в DRF на JWT
+
+1. `pip install djangorestframework`
+2. `pip install djangorestframework-simplejwt`
+3. settings.py
+   ```python
+   # settings.py
+   
+   INSTALLED_APPS += [
+      'accounts.apps.AccountsConfig',
+      'rest_framework',
+      'rest_framework_simplejwt',
+   ]
+
+   # JWT-аутентификация
+   REST_FRAMEWORK = {
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+         'rest_framework_simplejwt.authentication.JWTAuthentication',
+      ),
+   }
+   ```
+4. API. Регистрация пользователя
+   + class RegisterSerializer(serializers.ModelSerializer)
+   + class RegisterView(generics.CreateAPIView)
+   ```python
+   urlpatterns = [
+       path('register/', RegisterView.as_view(), name='register'),
+   ]
+   ```
 
 ## 6 - To-Do List
 
