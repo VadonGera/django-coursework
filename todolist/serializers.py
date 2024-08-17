@@ -27,6 +27,7 @@ class TaskViewSerializer(serializers.ModelSerializer):
             'due_date',
             'status',
             'tags',
+            'is_active',
             'comments_count',
         ]
 

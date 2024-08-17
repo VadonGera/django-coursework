@@ -49,7 +49,7 @@ class Task(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец')
     # tags = models.ManyToManyField('todolist.Tag', verbose_name='теги', related_name='tasks')
     tags = models.CharField(max_length=255, verbose_name='Теги', blank=True)
-
+    is_active = models.BooleanField('is active', default=True)
     due_date = models.DateTimeField(null=True, blank=True, verbose_name='Срок выполнения')
 
     def save(self, *args, **kwargs):
