@@ -43,7 +43,7 @@ INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
     'rest_framework',
     'rest_framework_simplejwt',
-    'todolist',
+    'todolist.apps.TodolistConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
