@@ -60,6 +60,7 @@
 4. class UserCreationForm(forms.ModelForm)
 5. class CustomUserAdmin(UserAdmin)
 7. `python manage.py createsuperuser`
+8. Добавил в модель User уникальную комбинация `first_name` и `last_name`
 
 ## 6 - REST API и Django REST Framework (DRF) + Системы аутентификации в DRF на JWT
 
@@ -90,9 +91,26 @@
        path('register/', RegisterView.as_view(), name='register'),
    ]
    ```
+   + API http://127.0.0.1:8000/api/register/
+   + Content:
+   ```python
+   {
+    "email": "",
+    "password": "",
+    "first_name": "",
+    "last_name": ""
+   }
+   ```
 
 ## 6 - To-Do List
 
 1. `python manage.py startapp todolist`
+   ```python
+   # settings.py
+   
+   INSTALLED_APPS += [
+      'todolist',
+   ]
 
-
+   ```
+2. Модели: Task, Comment, Tag, Category
