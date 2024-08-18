@@ -8,6 +8,7 @@ from rest_framework import permissions
 from .models import Task, Comment, Tag, Category
 from .serializers import TaskViewSerializer, TaskCreateSerializer
 
+
 class IsOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Проверяем, что пользователь является владельцем объекта
@@ -16,21 +17,62 @@ class IsOwner(permissions.BasePermission):
 
 class TaskListAPIView(generics.ListAPIView):
     """Task List"""
-    queryset = Task.objects.all()
     serializer_class = TaskViewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user, is_active=True)
 
 
 class TaskItemAPIView(generics.RetrieveAPIView):
     """Task Item"""
-    queryset = Task.objects.all()
+    # queryset = Task.objects.filter(is_active=True)
     serializer_class = TaskViewSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user, is_active=True)
 
 
 class TaskCreateAPIView(generics.CreateAPIView):
     """Task Create"""
-    queryset = Task.objects.all()
+    # queryset = Task.objects.filter(is_active=True)
     serializer_class = TaskCreateSerializer
+    permission_classes = [IsAuthenticated]  # Только аутентифицированные пользователи могут создавать задачи
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class TaskDeleteAPIView(generics.DestroyAPIView):
+    """Delete Task"""
+    # queryset = Task.objects.filter(owner=self.request.user, is_active=True)
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        return Task.objects.filter(owner=self.request.user, is_active=True)
+
+    def perform_destroy(self, instance):
+        instance.is_active = False
+        instance.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Контроллер для модели Task через ViewSet
