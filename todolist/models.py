@@ -2,26 +2,11 @@ import re
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
+from .stables import STATUSES, COLORES
 
 class Category(models.Model):
-    COLOR_RED = 'RED'
-    COLOR_YELLOW = 'YELLOW'
-    COLOR_GREEN = 'GREEN'
-    COLOR_BLUE = 'BLUE'
-    COLOR_BLACK = 'BLACK'
-    COLOR_WHITE = 'WHITE'
-
-    COLORES = (
-        (COLOR_RED, 'Красный'),
-        (COLOR_YELLOW, 'Желтый'),
-        (COLOR_GREEN, 'Зеленый'),
-        (COLOR_BLUE, 'Синий'),
-        (COLOR_BLACK, 'Черный'),
-        (COLOR_WHITE, 'Белый'),
-    )
-
     name = models.CharField(max_length=50, verbose_name='Категория')
-    color = models.CharField(choices=COLORES, default=COLOR_WHITE, verbose_name='Цвет', max_length=10)
+    color = models.CharField(choices=COLORES, default='WHITE', verbose_name='Цвет', max_length=10)
 
     def __str__(self):
         return self.name
@@ -32,22 +17,14 @@ class Category(models.Model):
 
 
 class Task(models.Model):
-    STATUS_DRAFT = 'DRAFT'
-    STATUS_PUBLISHED = 'PUBLISHED'
-
-    STATUSES = (
-        (STATUS_DRAFT, 'Черновик'),
-        (STATUS_PUBLISHED, 'Опубликована'),
-    )
-
     title = models.CharField(max_length=150, verbose_name='Имя задачи')
     description = models.TextField(null=True, blank=True, verbose_name='Описание')
 
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Категория')
 
-    status = models.CharField(choices=STATUSES, default=STATUS_DRAFT, verbose_name='Статус', max_length=10)
+    status = models.CharField(choices=STATUSES, default='DRAFT', verbose_name='Статус', max_length=10)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец')
-    # tags = models.ManyToManyField('todolist.Tag', verbose_name='теги', related_name='tasks')
+
     tags = models.CharField(max_length=255, verbose_name='Теги', blank=True)
     is_active = models.BooleanField('is active', default=True)
     due_date = models.DateTimeField(null=True, blank=True, verbose_name='Срок выполнения')
@@ -119,5 +96,3 @@ class TaskTag(models.Model):
 
     def __str__(self):
         return f'{self.task.name} - {self.tag.name}'
-
-

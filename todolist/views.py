@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
@@ -7,8 +10,6 @@ from rest_framework import permissions
 
 from .models import Task, Comment, Tag, Category
 from .serializers import (
-    # TaskViewSerializer,
-    # TaskCreateSerializer,
     CategorySerializer,
     CommentSerializer,
     TaskSerializer,
@@ -61,8 +62,20 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Возвращаем только те комментарии, которые принадлежат задачам текущего пользователя
-        return Comment.objects.filter(task__owner=self.request.user)
+        user = self.request.user
+        cache_key = f'comments_{user.id}'
+        comments = cache.get(cache_key)
+
+        if not comments:
+            # Возвращаем только те комментарии, которые принадлежат задачам текущего пользователя
+            comments = Comment.objects.filter(task__owner=self.request.user)
+            cache.set(cache_key, comments, timeout=60*15) # Кешируем на 15 минут
+
+        return comments
+
+    @method_decorator(cache_page(60 * 15))  # Кешируем на уровне представления на 15 минут
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         task = serializer.validated_data['task']
@@ -80,63 +93,3 @@ class CommentViewSet(viewsets.ModelViewSet):
         if instance.task.owner != self.request.user:
             raise PermissionDenied("Вы не являетесь владельцем этой задачи.")
         instance.delete()
-
-
-
-# class TaskListAPIView(generics.ListAPIView):
-#     """Task List"""
-#     serializer_class = TaskViewSerializer
-#     permission_classes = [IsAuthenticated]
-#
-#     def get_queryset(self):
-#         return Task.objects.filter(owner=self.request.user, is_active=True)
-#
-#
-# class TaskItemAPIView(generics.RetrieveAPIView):
-#     """Task Item"""
-#     # queryset = Task.objects.filter(is_active=True)
-#     serializer_class = TaskViewSerializer
-#     permission_classes = [IsAuthenticated]
-#     lookup_field = 'pk'
-#
-#     def get_queryset(self):
-#         return Task.objects.filter(owner=self.request.user, is_active=True)
-#
-#
-# class TaskCreateAPIView(generics.CreateAPIView):
-#     """Task Create"""
-#     # queryset = Task.objects.filter(is_active=True)
-#     serializer_class = TaskCreateSerializer
-#     permission_classes = [IsAuthenticated]  # Только аутентифицированные пользователи могут создавать задачи
-#
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-#
-#
-# class TaskDeleteAPIView(generics.DestroyAPIView):
-#     """Delete Task"""
-#     # queryset = Task.objects.filter(owner=self.request.user, is_active=True)
-#     permission_classes = [IsAuthenticated]
-#     lookup_field = 'pk'
-#
-#     def get_queryset(self):
-#         return Task.objects.filter(owner=self.request.user, is_active=True)
-#
-#     def perform_destroy(self, instance):
-#         instance.is_active = False
-#         instance.save()
-
-
-
-
-# Контроллер для модели Task через ViewSet
-# class TodolistViewSet(viewsets.ModelViewSet):
-#     queryset = Task.objects.all()
-#     serializer_class = TaskViewSerializer
-#     # permission_classes = [IsAuthenticated, IsOwner]
-#     # permission_classes = [IsOwner]
-#
-#     def perform_update(self, serializer):
-#         if not serializer.instance.owner == self.request.user:
-#             raise PermissionDenied("Вы не являетесь владельцем этой задачи")
-#         serializer.save()
