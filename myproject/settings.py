@@ -45,6 +45,7 @@ INSTALLED_APPS += [
     'accounts.apps.AccountsConfig',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
     'todolist.apps.TodolistConfig',
 ]
 
@@ -150,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),  # Время жизни Access токена
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),  # Время жизни Access токена
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Время жизни Refresh токена
     "ROTATE_REFRESH_TOKENS": False,  # Ротация Refresh токенов
     "BLACKLIST_AFTER_ROTATION": False,  # Черный список после ротации
