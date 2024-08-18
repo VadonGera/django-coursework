@@ -12,8 +12,8 @@ class CommentInLine(admin.TabularInline):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'owner', 'due_date', 'status',)
-    list_filter = ('owner', 'category', 'status',)
+    list_display = ('title', 'category', 'owner', 'due_date', 'status', 'is_active',)
+    list_filter = ('owner', 'category', 'status', 'is_active',)
     search_fields = ('title', 'description',)
     ordering = ('-due_date',)
 
