@@ -151,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),  # Время жизни Access токена
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # Время жизни Access токена
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Время жизни Refresh токена
     "ROTATE_REFRESH_TOKENS": False,  # Ротация Refresh токенов
     "BLACKLIST_AFTER_ROTATION": False,  # Черный список после ротации
@@ -189,3 +189,5 @@ SIMPLE_JWT = {
     # "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     # "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+# APPEND_SLASH = False
