@@ -114,3 +114,40 @@
 
    ```
 2. Модели: Task, Comment, Tag, Category
+
+
+## 10 - Redis, кеширование
+Запускаем контейнер с Redis в Docker
+1. Создаем контейнер, если его нет: `docker run -d -p 6379:6379 redis`
+2. Запускаем Redis в docker: `docker exec -it a68eb6c6bcdcfb5dcc4c93d20c4cb933d1c18f42cd0a003083a312546fb65017 redis-cli` здесь id моего контейнера
+3. `pip install django-redis`
+4. 
+   ```python
+   # settings.py
+   
+   CACHES = {
+       'default': {
+           'BACKEND': 'django_redis.cache.RedisCache',
+           'LOCATION': 'redis://127.0.0.1:6379/1',
+           'OPTIONS': {
+               'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+           },
+           'KEY_PREFIX': 'todolist'  # Префикс для всех ключей кеша, чтобы избежать конфликтов
+       }
+   }
+   ```
+5. Проверяем
+   > #### 127.0.0.1:6379> ping
+   > #### PONG
+6. В настройках указали базу данных Redis номер 1: `'LOCATION': 'redis://127.0.0.1:6379/1'`,. 
+Поэтому выполняем `select 1`, чтобы выбрать эту базу данных, а затем `keys *`, чтобы просмотреть 
+все ключи. Префикс появится в соответствии с настройкой `'KEY_PREFIX'`
+   > ##### 127.0.0.1:6379> select 1
+   > ##### OK
+   > ##### 127.0.0.1:6379[1]> keys *
+   > ##### 1) "todolist:1:comments_1"
+   > ##### 2) "todolist:1:comments_3"
+7. Команды: set, get, del и др. exit - выход
+8. Кратко: https://www.youtube.com/watch?v=nSHmAzbQAps
+
+  

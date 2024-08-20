@@ -28,8 +28,11 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1']
+# Настройка IP-адресов, из которых можно подключаться к Debug Toolbar
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Application definition
 
@@ -47,6 +50,7 @@ INSTALLED_APPS += [
     'rest_framework_simplejwt',
     'drf_yasg',
     'todolist.apps.TodolistConfig',
+    'debug_toolbar',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -66,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -151,7 +156,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # Время жизни Access токена
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=240),  # Время жизни Access токена
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Время жизни Refresh токена
     "ROTATE_REFRESH_TOKENS": False,  # Ротация Refresh токенов
     "BLACKLIST_AFTER_ROTATION": False,  # Черный список после ротации
@@ -179,7 +184,7 @@ SIMPLE_JWT = {
     "JTI_CLAIM": "jti",
 
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=10),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=240),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
     # "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
@@ -199,6 +204,6 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         },
-        'KEY_PREFIX': 'myapp'  # Префикс для всех ключей кеша, чтобы избежать конфликтов
+        'KEY_PREFIX': 'todolist'  # Префикс для всех ключей кеша, чтобы избежать конфликтов
     }
 }
