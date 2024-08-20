@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from .stables import STATUSES, COLORES
 
+
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name='Категория')
     color = models.CharField(choices=COLORES, default='WHITE', verbose_name='Цвет', max_length=10)

@@ -1,4 +1,3 @@
-
 # color of the category
 COLORES = [
     ('RED', 'Красный'),
@@ -14,4 +13,3 @@ STATUSES = [
     ('DRAFT', 'Черновик'),
     ('PUBLISHED', 'Опубликована'),
 ]
-

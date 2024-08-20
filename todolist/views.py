@@ -69,7 +69,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         if not comments:
             # Возвращаем только те комментарии, которые принадлежат задачам текущего пользователя
             comments = Comment.objects.filter(task__owner=self.request.user)
-            cache.set(cache_key, comments, timeout=60*15) # Кешируем на 15 минут
+            cache.set(cache_key, comments, timeout=60 * 15)  # Кешируем на 15 минут
 
         return comments
 

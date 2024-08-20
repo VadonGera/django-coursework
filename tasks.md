@@ -1,13 +1,14 @@
 ## 1 - Init
+
 1. `git init`
 2. `requirements.txt`
-   + `pip install -r requirements.txt`
+    + `pip install -r requirements.txt`
 3. `.gitignore`
 4. `README.md`
 5. GitHub
-   + git branch -M main
-   + git remote add origin https://github.com/VadonGera/django-coursework
-   + git push -u origin main
+    + git branch -M main
+    + git remote add origin https://github.com/VadonGera/django-coursework
+    + git push -u origin main
 
 ## 2 - Django
 
@@ -21,8 +22,9 @@
 ## 4 - Postgres
 
 1. Запускаем контейнер с PostgreSQL
-   + docker run --name db_postgres -e POSTGRES_USER=myadmin -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=mypostgres -p 5432:5432 -d postgres
-   + Для работы с PostgreSQL через Docker надо остановить службу PostgreSQL в Windows, если она запущена.
+    + docker run --name db_postgres -e POSTGRES_USER=myadmin -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=mypostgres
+      -p 5432:5432 -d postgres
+    + Для работы с PostgreSQL через Docker надо остановить службу PostgreSQL в Windows, если она запущена.
 2. `pip install "psycopg[binary]"`
 3. settings.py
    ```python
@@ -84,15 +86,15 @@
    }
    ```
 4. API. Регистрация пользователя
-   + class RegisterSerializer(serializers.ModelSerializer)
-   + class RegisterView(generics.CreateAPIView)
+    + class RegisterSerializer(serializers.ModelSerializer)
+    + class RegisterView(generics.CreateAPIView)
    ```python
    urlpatterns = [
        path('register/', RegisterView.as_view(), name='register'),
    ]
    ```
-   + API http://127.0.0.1:8000/api/register/
-   + Content:
+    + API http://127.0.0.1:8000/api/register/
+    + Content:
    ```python
    {
     "email": "",
@@ -115,33 +117,36 @@
    ```
 2. Модели: Task, Comment, Tag, Category
 
-
 ## 10 - Redis, кеширование
+
 Запускаем контейнер с Redis в Docker
+
 1. Создаем контейнер, если его нет: `docker run -d -p 6379:6379 redis`
-2. Запускаем Redis в docker: `docker exec -it a68eb6c6bcdcfb5dcc4c93d20c4cb933d1c18f42cd0a003083a312546fb65017 redis-cli` здесь id моего контейнера
+2. Запускаем Redis в
+   docker: `docker exec -it a68eb6c6bcdcfb5dcc4c93d20c4cb933d1c18f42cd0a003083a312546fb65017 redis-cli` здесь id моего
+   контейнера
 3. `pip install django-redis`
-4. 
-   ```python
-   # settings.py
-   
-   CACHES = {
-       'default': {
-           'BACKEND': 'django_redis.cache.RedisCache',
-           'LOCATION': 'redis://127.0.0.1:6379/1',
-           'OPTIONS': {
-               'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-           },
-           'KEY_PREFIX': 'todolist'  # Префикс для всех ключей кеша, чтобы избежать конфликтов
-       }
-   }
-   ```
+4.
+```python
+# settings.py
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'todolist'  # Префикс для всех ключей кеша, чтобы избежать конфликтов
+    }
+}
+```
 5. Проверяем
    > #### 127.0.0.1:6379> ping
    > #### PONG
-6. В настройках указали базу данных Redis номер 1: `'LOCATION': 'redis://127.0.0.1:6379/1'`,. 
-Поэтому выполняем `select 1`, чтобы выбрать эту базу данных, а затем `keys *`, чтобы просмотреть 
-все ключи. Префикс появится в соответствии с настройкой `'KEY_PREFIX'`
+6. В настройках указали базу данных Redis номер 1: `'LOCATION': 'redis://127.0.0.1:6379/1'`,.
+   Поэтому выполняем `select 1`, чтобы выбрать эту базу данных, а затем `keys *`, чтобы просмотреть
+   все ключи. Префикс появится в соответствии с настройкой `'KEY_PREFIX'`
    > ##### 127.0.0.1:6379> select 1
    > ##### OK
    > ##### 127.0.0.1:6379[1]> keys *

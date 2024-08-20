@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -31,10 +30,13 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=150, verbose_name='Имя задачи')),
                 ('description', models.TextField(blank=True, null=True, verbose_name='Описание')),
-                ('status', models.CharField(choices=[('DRAFT', 'Черновик'), ('PUBLISHED', 'Опубликована')], default='DRAFT', max_length=10, verbose_name='Статус')),
+                ('status',
+                 models.CharField(choices=[('DRAFT', 'Черновик'), ('PUBLISHED', 'Опубликована')], default='DRAFT',
+                                  max_length=10, verbose_name='Статус')),
                 ('tags', models.CharField(blank=True, max_length=255, verbose_name='Теги')),
                 ('due_date', models.DateTimeField(blank=True, null=True, verbose_name='Срок выполнения')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Владелец')),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL,
+                                            verbose_name='Владелец')),
             ],
             options={
                 'verbose_name': 'задача',
@@ -47,7 +49,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('comment', models.CharField(max_length=255, verbose_name='Комментарий')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='todolist.task')),
+                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments',
+                                           to='todolist.task')),
             ],
             options={
                 'verbose_name': 'комментарий',
@@ -58,8 +61,10 @@ class Migration(migrations.Migration):
             name='TaskTag',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_tags', to='todolist.tag')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_tags', to='todolist.task')),
+                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_tags',
+                                          to='todolist.tag')),
+                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='task_tags',
+                                           to='todolist.task')),
             ],
         ),
     ]

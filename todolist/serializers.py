@@ -5,7 +5,7 @@ from .models import Task, Comment, Tag, Category
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'color',]
+        fields = ['id', 'name', 'color', ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -25,8 +25,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'tags', 'is_active', 'due_date', 'comments_count', 'comments'
         ]
         read_only_fields = ['owner']
-
-
 
 # class TaskViewSerializer(serializers.ModelSerializer):
 #     # кол-во комментариев у задачи

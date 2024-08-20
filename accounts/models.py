@@ -50,7 +50,6 @@ class User(AbstractBaseUser):
     # REQUIRED_FIELDS = []
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
-
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
