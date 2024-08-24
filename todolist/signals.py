@@ -3,6 +3,14 @@ from django.dispatch import receiver
 from django.core.cache import cache
 
 from .models import Comment
+from .tasks import check_and_filter_post
+
+
+@receiver(post_save, sender=Comment)
+def check_save_comment(sender, instance, created, **kwargs):
+    if created:
+        # Запуск задачи Celery для проверки нового комментария
+        check_and_filter_post.delay(instance.id)
 
 
 # Инвалидация кэша при добавлении или изменении комментария

@@ -62,6 +62,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        # Возвращаем только те комментарии, которые принадлежат задачам текущего пользователя
+        # return Comment.objects.filter(task__owner=self.request.user)
+
+
         user = self.request.user
         cache_key = f'comments_{user.id}'
         comments = cache.get(cache_key)
@@ -69,7 +73,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         if not comments:
             # Возвращаем только те комментарии, которые принадлежат задачам текущего пользователя
             comments = Comment.objects.filter(task__owner=self.request.user)
-            cache.set(cache_key, comments, timeout=60 * 15)  # Кешируем на 15 минут
+            cache.set(cache_key, comments, timeout=60 * 5)  # Кешируем на 5 минут
 
         return comments
 

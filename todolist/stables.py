@@ -13,3 +13,6 @@ STATUSES = [
     ('DRAFT', 'Черновик'),
     ('PUBLISHED', 'Опубликована'),
 ]
+
+BANNED_WORDS = ['продать', 'крипта', 'ставки', 'хер']
+BANNED_REPLACE = "###"

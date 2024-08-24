@@ -26,11 +26,11 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = [] # ['localhost', '127.0.0.1']
 # Настройка IP-адресов, из которых можно подключаться к Debug Toolbar
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+# INTERNAL_IPS = [
+#     '127.0.0.1',
+# ]
 
 # Application definition
 
@@ -48,7 +48,7 @@ INSTALLED_APPS += [
     'rest_framework_simplejwt',
     'drf_yasg',
     'todolist.apps.TodolistConfig',
-    'debug_toolbar',
+    # 'debug_toolbar',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -200,3 +200,18 @@ CACHES = {
         'KEY_PREFIX': 'todolist'  # Префикс для всех ключей кеша, чтобы избежать конфликтов
     }
 }
+
+
+# Настройки для Celery
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
+# Адрес брокера сообщений Redis
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+# Backend для хранения результатов задач
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Europe/Moscow'  # часовой пояс
+# CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+# BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
