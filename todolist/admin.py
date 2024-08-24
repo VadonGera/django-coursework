@@ -3,9 +3,6 @@ from django.contrib import admin
 from .models import Task, Comment, Tag, Category
 
 
-# admin.site.register(Task)
-
-
 class CommentInLine(admin.TabularInline):
     model = Comment
 

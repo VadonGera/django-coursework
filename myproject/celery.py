@@ -17,7 +17,6 @@ app.config_from_object(
     'django.conf:settings',
     namespace='CELERY',
 )
-# broker_connection_retry = False
 
 # Автоматически находим и регистрируем задачи в приложениях Django
 app.autodiscover_tasks()

@@ -62,10 +62,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Возвращаем только те комментарии, которые принадлежат задачам текущего пользователя
-        # return Comment.objects.filter(task__owner=self.request.user)
-
-
         user = self.request.user
         cache_key = f'comments_{user.id}'
         comments = cache.get(cache_key)
@@ -77,17 +73,15 @@ class CommentViewSet(viewsets.ModelViewSet):
 
         return comments
 
-    # @method_decorator(cache_page(60 * 15))  # Кешируем на уровне представления на 15 минут
-    # def list(self, request, *args, **kwargs):
-    #     return super().list(request, *args, **kwargs)
+    @method_decorator(cache_page(60 * 15))  # Кешируем на уровне представления на 15 минут
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         task = serializer.validated_data['task']
         if task.owner != self.request.user:
             raise PermissionDenied("Вы не являетесь владельцем этой задачи.")
         serializer.save()
-        # Инвалидация кеша
-        # cache.delete(f'comments_{self.request.user.id}')
 
     def perform_update(self, serializer):
         comment = self.get_object()

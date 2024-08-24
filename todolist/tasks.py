@@ -38,7 +38,7 @@ def check_task_deadlines():
     today = timezone.now().date()
 
     # Получаем все задачи, у которых дедлайн сегодня или прошел
-    overdue_tasks = Task.objects.filter(due_date__lte=today)
+    overdue_tasks = Task.objects.filter(due_date__lte=today, is_active=True, status='PUBLISHED')
 
     # Сдвигаем дедлайн на один день вперед для всех найденных задач
     for task in overdue_tasks:
