@@ -28,6 +28,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'check_task_deadlines_daily': {
         'task': 'todolist.tasks.check_task_deadlines',
-        'schedule': crontab(),  # Выполняется каждую минуту.
+        'schedule': crontab(minute='*/5'),  # Выполняется каждые 5 минут.
     },
 }

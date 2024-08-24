@@ -28,6 +28,8 @@ def check_and_filter_post(comment_id):
                 comment.comment = filtered_text
                 comment.save()
 
+        return f"Replacing '{original_text}' with '{filtered_text}'."
+
     except Comment.DoesNotExist:
         pass
 
